@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Verification</title>
+</head>
+<body>
+    <h1>Phone Verification</h1>
+    <input type="text" id="phone" placeholder="Enter your phone number" />
+    <button onclick="sendCode()">Send Verification Code</button>
+    <br/><br/>
+    <input type="text" id="code" placeholder="Enter verification code" />
+    <button onclick="verifyCode()">Verify Code</button>
+
+    <script>
+        async function sendCode() {
+            const phone = document.getElementById('phone').value;
+            const response = await fetch('/api/users/send-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneNumber: phone })
+            });
+            const data = await response.json();
+            alert(data.message);
+        }
+
+        async function verifyCode() {
+            const phone = document.getElementById('phone').value;
+            const code = document.getElementById('code').value;
+            const response = await fetch('/api/users/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneNumber: phone, verificationCode: code })
+            });
+            const data = await response.json();
+            alert(data.message);
+        }
+    </script>
+</body>
+</html>
